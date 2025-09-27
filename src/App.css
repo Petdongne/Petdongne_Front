@@ -1,0 +1,76 @@
+/* App Layout Styles */
+.app-layout {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header Styles */
+.app-header {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.app-menu {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Content Styles */
+.app-content {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  overflow: auto;
+}
+
+.app-content--map {
+  margin-top: 64px;
+  height: calc(100vh - 64px);
+}
+
+.app-content--other {
+  margin-top: 64px;
+  height: calc(100vh - 128px); /* Footer 포함시 64px 추가 */
+}
+
+/* Footer Styles */
+.app-footer {
+  text-align: center;
+  height: 64px;
+  line-height: 64px;
+  padding: 0;
+}
+
+/* CSS Variables for consistency */
+:root {
+  --header-height: 64px;
+  --footer-height: 64px;
+  --header-bg-color: #ffffff;
+  --border-color: #d9d9d9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 16px;
+  }
+
+  .app-content--map {
+    margin-top: var(--header-height);
+    height: calc(100vh - var(--header-height));
+  }
+
+  .app-content--other {
+    margin-top: var(--header-height);
+    height: calc(100vh - var(--header-height) - var(--footer-height));
+  }
+}

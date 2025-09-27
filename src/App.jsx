@@ -9,6 +9,7 @@ import {
 import { Layout, Menu } from "antd";
 import BasicMap from "./pages/BasicMap";
 import BadReq from "./pages/BadReq";
+import "./App.css";
 
 const { Header, Content, Footer } = Layout;
 
@@ -26,48 +27,27 @@ const AppLayout = () => {
     if (item) navigate(item.path);
   };
 
-  const isMapPage = location.pathname === "/map";
-  const headerHeight = 64; // Ant Design Header 기본 높이
+  const isMapPage = location.pathname !== "/other";
 
   return (
-    <Layout style={{ height: "100vh", margin: 0, padding: 0 }}>
+    <Layout className="app-layout">
       {/* 헤더를 화면 상단에 고정 */}
-      <Header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          padding: 0,
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          backgroundColor: "#ffffff",
-          borderBottom: "1px solid #d9d9d9",
-        }}
-      >
+      <Header className="app-header">
         <Menu
           theme="light"
           mode="horizontal"
           defaultSelectedKeys={["map"]}
           items={items.map((i) => ({ key: i.key, label: i.label }))}
           onClick={onMenuClick}
-          style={{ flex: 1, minWidth: 0 }}
+          className="app-menu"
         />
       </Header>
 
       {/* Content 영역에 margin-top 추가 */}
       <Content
-        style={{
-          padding: 0,
-          margin: 0,
-          marginTop: headerHeight,
-          height: isMapPage
-            ? `calc(100vh - ${headerHeight}px)`
-            : `calc(100vh - ${headerHeight + 64}px)`, // Footer 포함시 64px 추가
-          width: "100%",
-          overflow: "auto", // 스크롤 가능
-        }}
+        className={`app-content ${
+          isMapPage ? "app-content--map" : "app-content--other"
+        }`}
       >
         <Routes>
           <Route path="/map" element={<BasicMap />} />
@@ -77,14 +57,7 @@ const AppLayout = () => {
       </Content>
 
       {!isMapPage && (
-        <Footer
-          style={{
-            textAlign: "center",
-            height: "64px",
-            lineHeight: "64px",
-            padding: 0,
-          }}
-        >
+        <Footer className="app-footer">
           Ant Design ©{new Date().getFullYear()} Created by Ant UED
         </Footer>
       )}
