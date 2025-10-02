@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Map, MapMarker } from "react-kakao-maps-sdk";
+import {
+  Map,
+  MapMarker,
+  MapTypeControl,
+  ZoomControl,
+} from "react-kakao-maps-sdk";
 import useKakaoLoader from "../components/UseKakaoLoader";
 
 // API URL
@@ -119,7 +124,7 @@ export default function BasicMap() {
   }, [fetchBuildings]);
 
   // 지도 bounds 변경 핸들러
-  const handleBoundsChanged = useCallback((map) => {
+  const handleDragEnd = useCallback((map) => {
     try {
       const bounds = map.getBounds();
       console.log("원본 bounds 객체:", bounds);
@@ -150,13 +155,13 @@ export default function BasicMap() {
   }, []);
 
   return (
-    <div style={{ width: "100%", height: "100vh", position: "relative" }}>
+    <div style={{ flex: 1, position: "relative" }}>
       <Map
         id="map"
         center={mapCenter}
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: "100%", height: "100%" }} // 부모 컨테이너 크기 100% 차지
         level={3}
-        onBoundsChanged={handleBoundsChanged}
+        onDragEnd={handleDragEnd}
       >
         {/* 빌딩 마커들 렌더링 */}
         {buildings.map((building) => (
@@ -173,6 +178,8 @@ export default function BasicMap() {
             }}
           />
         ))}
+
+        <ZoomControl position={"RIGHT"} />
       </Map>
 
       {/* 로딩 상태 표시 */}

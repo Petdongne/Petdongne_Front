@@ -33,8 +33,11 @@
 }
 
 .app-content--map {
-  margin-top: 64px;
-  height: calc(100vh - 64px);
+  margin-top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* 스크롤 제거 */
 }
 
 .app-content--other {
