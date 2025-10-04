@@ -29,6 +29,7 @@ export default function BasicMap() {
 
   // API URL 생성 함수
   const buildApiUrl = useCallback((bounds, level) => {
+    console.log("buildApiUrl 호출 - bounds:", bounds, "level:", level);
     if (!bounds || !bounds.sw || !bounds.ne) {
       console.log("bounds가 유효하지 않습니다:", bounds);
       return level < 4 ? API_BASE_URL_DETAILS : API_BASE_URL_CLUSTERS;
@@ -89,6 +90,7 @@ export default function BasicMap() {
 
   // 지도 상태 변경 시 API 호출 (디바운싱 적용)
   useEffect(() => {
+    console.log("지도 상태 변경 감지 - bounds 또는 zoomLevel 변경:", mapState);
     if (!mapState.bounds) return;
 
     const timeoutId = setTimeout(() => {
@@ -100,6 +102,7 @@ export default function BasicMap() {
 
   // 초기 로드 시 기본 bounds로 API 호출
   useEffect(() => {
+    console.log("초기 로드 시 기본 bounds로 API 호출");
     const defaultBounds = {
       sw: { lat: 37.4905425, lng: 127.0172249 },
       ne: { lat: 37.5024595, lng: 127.0386825 },
@@ -109,13 +112,13 @@ export default function BasicMap() {
 
   // 지도 상태 변경 핸들러
   const handleMapStateChange = useCallback((map) => {
+    console.log("지도 상태 변경 감지:", map);
     try {
       const bounds = map.getBounds();
       const sw = bounds.getSouthWest();
       const ne = bounds.getNorthEast();
 
-      const centerLat = (sw.Ma + ne.Ma) / 2;
-      const centerLng = (sw.La + ne.La) / 2;
+      const center = map.getCenter();
 
       setMapState({
         bounds: {
@@ -124,8 +127,8 @@ export default function BasicMap() {
         },
         zoomLevel: map.getLevel(),
         center: {
-          lat: centerLat,
-          lng: centerLng,
+          lat: center.getLat(),
+          lng: center.getLng(),
         },
       });
     } catch (error) {
